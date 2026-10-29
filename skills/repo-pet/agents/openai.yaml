@@ -1,0 +1,4 @@
+interface:
+  display_name: "RepoPet"
+  short_description: "Turn real CI results into a tiny animated repo pet"
+  default_prompt: "Use $repo-pet to give this repository an animated README pet."

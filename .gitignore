@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.venv/
+.repopet-venv/
+.pytest_cache/
+dist/
+work/
+site-preview.log

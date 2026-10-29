@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "name": "Patch",
+  "stage": "baby",
+  "theme": "mint",
+  "stage_source": "cosmetic",
+  "commits": null,
+  "evidence": {
+    "mood": "failing",
+    "source": "demo",
+    "reason": "Explicit synthetic example",
+    "tests": 12,
+    "passed": 9,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 1
+  },
+  "demo": true
+}
