@@ -1,4 +1,4 @@
-name: RepoPet checks
+name: Agent Skill checks
 on:
   push:
     branches: [main]
@@ -24,7 +24,9 @@ jobs:
       - run: python -m unittest discover -s tests -v
       - name: Render the five preview moods
         run: python skills/repo-pet/scripts/repopet.py demo --out work/repopet-demo
+      - name: Run the real-pet Skill example
+        run: python skills/pet-life/scripts/petlife.py build --input skills/pet-life/assets/household.example.json --as-of 2026-10-03 --trip-days 3 --out work/pet-life-demo
       - uses: actions/upload-artifact@v4
         with:
-          name: repopet-${{ matrix.os }}
-          path: work/repopet-demo
+          name: skill-examples-${{ matrix.os }}
+          path: work/

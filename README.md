@@ -1,3 +1,61 @@
+# Everyday Agent Skills
+
+Practical Skills for the tasks people actually give an Agent. **Start with PetLife: real pets, real receipts, less scattered care information.**
+
+[中文](README.zh-CN.md) · [PetLife Skill](skills/pet-life/SKILL.md) · [Worked example](examples/pet-life/agent-example.md)
+
+## PetLife · Let your Agent handle the pet paperwork
+
+> “Here are food labels, receipts and our routine. How long will the food last for both cats? What did I spend this month? Prepare a three-day sitter handoff.”
+
+The Agent reads the supplied material, matches pets and products, reconciles records, calls a small arithmetic helper, and writes a useful answer. The Skill supplies the workflow, record format, unit rules and local helper. **You use it inside your existing Agent.** Image reading depends on the host Agent; the helper does not bundle OCR.
+
+```sh
+npx skills add l422145205-source/showcase-skills --skill pet-life
+```
+
+Then ask:
+
+> Use `$pet-life` to organize these real-pet records, check our food supply, and prepare a sitter card. Keep unclear receipt values unknown.
+
+| You bring | Your Agent can deliver |
+| --- | --- |
+| Food labels + actual paid prices | Consistent price/unit and label-calorie comparisons |
+| A stock count + recorded use + the existing routine | Shared household stock coverage, with per-pet quantities |
+| Receipts, including repeated uploads | Deduplicated spending and a pet-life monthly brief |
+| Feeding times, quirks and travel dates | A sitter handoff and packing quantities, with missing essentials visible |
+
+### A tiny example, with actual calculation outputs
+
+Two fictional cats, one shared bag, a duplicated receipt, an unclear purchase and a future record:
+
+- **CNY 209** recorded spending in the example period; the repeated receipt counts once.
+- **25.7 days** of dry-food coverage and **7 days** of wet-food coverage, based on the supplied book stock and daily routine.
+- **CNY 13.22/day** projected from the latest receipt prices, kept separate from actual cash spending.
+- A **three-day handoff draft** with separate pet quantities; missing emergency arrangements are not invented.
+
+[Read the synthetic source packet and worked conversation →](examples/pet-life/agent-example.md)  
+[Open the generated brief](examples/pet-life/brief.md) · [Sitter card](examples/pet-life/care-card.md)
+
+### Lightweight by design
+
+Python 3.10+; the PetLife helper uses **only the standard library**. No additional model service, database or web app. The host Agent supplies reasoning and any image understanding.
+
+```sh
+python skills/pet-life/scripts/petlife.py build --input skills/pet-life/assets/household.example.json --as-of 2026-10-03 --trip-days 3 --out work/pet-life-demo
+```
+
+Records stay in the selected workspace. The helper makes no network calls and never edits the input file or sends a sitter card. Ambiguous units, conflicting receipt IDs and mixed currencies are surfaced rather than guessed. It uses the owner's current quantities for bookkeeping; it does not prescribe diets or medication. [Format and calculation rules](skills/pet-life/references/record-format.md) · [Label sources](skills/pet-life/references/labels-and-care.md)
+
+Want it to handle a particular real-life pet chore? Open an Issue with a **redacted or synthetic** example. If it saves you some paperwork, a Star helps the next pet owner find it.
+
+## Also kept in this repository
+
+The earlier RepoPet README mascot Skill and its demo remain available below. PetLife is the practical real-pet Skill described above.
+
+<details>
+<summary>RepoPet — animated repository mascot (earlier project)</summary>
+
 <p align="center">
   <img src="examples/repopet-hero.gif" alt="RepoPet: an animated pixel dragon reacts to passing, failing, running, skipped and unknown test signals" width="100%">
 </p>
@@ -89,3 +147,5 @@ Requests for new expressions, palettes and original creature designs are welcome
 Run the behavior checks with `python -m unittest discover -s tests -v`. Rebuild the gallery with `python scripts/build_showcase.py`.
 
 MIT licensed. All dragon sprites in this repository are original code-drawn artwork.
+
+</details>

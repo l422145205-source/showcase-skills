@@ -1,3 +1,58 @@
+# 日常生活 Agent Skills
+
+把现实中的零散任务交给 Agent。当前主打 **PetLife｜铲屎官生活管家**：读宠物食品标签、小票和照顾说明，算账、查库存、做交接。
+
+[English](README.md) · [Skill 本体](skills/pet-life/SKILL.md) · [完整调用示例](examples/pet-life/agent-example.md)
+
+## 直接装进你的 Agent
+
+```sh
+npx skills add l422145205-source/showcase-skills --skill pet-life
+```
+
+然后对 Agent 说：
+
+> 用 `$pet-life` 整理这些猫粮标签、小票和我的日常说明。两只猫共用一袋粮，算一下还够吃多久、本月记了多少钱，再准备3天托管交接单。看不清的价格别猜。
+
+Skill 提供任务流程、记录结构、单位规则和确定性计算脚本；Agent 负责理解资料、读图（宿主支持时）、核对事实和完成回答。**使用入口就在 Agent 里。**
+
+## 三件实际能帮忙的事
+
+| 场景 | 得到什么 |
+| --- | --- |
+| 粮袋标签 + 购物小票 + 剩余库存 | 每100g/标签热量单位的价格、两只宠物共用库存还能撑多久 |
+| 一个月的小票与日常记录 | 不重复记账的消费汇总，以及可用“猫老板审计”口吻写的生活月报 |
+| 我要出门几天，朋友来照顾 | 每只宠物分别列用量、喂食位置、习惯、打包量；缺联系人就标草稿 |
+
+### 合成资料包跑出来的结果
+
+- 本期已记录 **209元**，同一张重复小票只算一次。
+- 干粮账面约够 **25.7天**，罐头约够 **7天**；会显示最近盘点日期和漏记的影响。
+- 按最近小票和现有用量估算 **13.22元/天**，与实际购买支出分开。
+- 三天托管按两只猫各自的既定用量整理；没有紧急联系安排，交接单保留为草稿。
+
+[看原始资料、调用方式与结果 →](examples/pet-life/agent-example.md)  
+[实际生成的生活账本](examples/pet-life/brief.md) · [托管交接单](examples/pet-life/care-card.md)
+
+### 怎么复现
+
+Python 3.10+，PetLife 的计算脚本只用标准库，不需要额外部署模型、数据库或网页。宿主 Agent 自身需要相应的语言/图像理解能力；脚本不自带 OCR。
+
+```sh
+python skills/pet-life/scripts/petlife.py build --input skills/pet-life/assets/household.example.json --as-of 2026-10-03 --trip-days 3 --out work/pet-life-demo
+```
+
+记录保存在选定的本地工作区。脚本不联网、不改输入账本、不自动把交接单发给别人。模糊价格不当成零、毫升不当成克、账面库存不当成传感器实测值。用量采用主人提供的现有安排，不替宠物开饮食或用药方案。[记录格式](skills/pet-life/references/record-format.md)
+
+有想让 Agent 帮忙的真实养宠杂事，可以用脱敏或合成资料提 Issue。喜欢这个 Skill，点个 Star 可以帮其他养宠人找到它。
+
+## 保留的旧项目
+
+之前的 RepoPet 仓库吉祥物 Skill 和展示页仍保留，展开可查看。
+
+<details>
+<summary>RepoPet：早期的仓库像素宠物项目</summary>
+
 # RepoPet · 给你的仓库养一只小龙
 
 ![RepoPet：测试状态决定小龙的心情](examples/repopet-hero.gif)
@@ -66,3 +121,5 @@ python skills/repo-pet/scripts/repopet.py render --repo . --theme peach --name M
 想要别的表情、配色或原创小生物？欢迎在 [Issues](https://github.com/l422145205-source/showcase-skills/issues) 留下想法。喜欢它的话，点个 Star 可以帮下一位养龙人找到这里。
 
 MIT 开源；像素龙由代码原创绘制。测试：`python -m unittest discover -s tests -v`。
+
+</details>
